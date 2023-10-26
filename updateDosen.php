@@ -151,8 +151,8 @@ $hasil=mysqli_query($koneksi,$sql) or die(mysqli_error($koneksi));
 				<td><?php echo $row["namadosen"]?></td>
 				<td><?php echo $row["homebase"]?></td>
 				<td>
-				<a class="btn btn-outline-primary btn-sm" href="editDosen.php?kode=<?php echo $row['npp']?>">Edit</a>
-				<a class="btn btn-outline-danger btn-sm" href="hpsDosen.php?kode=<?php echo enkripsiurl($row["npp"])?>" onclick="return confirm('Yakin dihapus nih?')">Hapus</a>
+				<a class="btn btn-outline-primary btn-sm" href="editDosen.php?kode=<?php echo ($row['npp'])?>">Edit</a>
+				<a class="btn btn-outline-danger btn-sm" href="hpsDosen.php?kode=<?php echo enkripsiurl ($row["npp"])?>" onclick="return confirm('Yakin dihapus nih?')">Hapus</a>
 				</td>
 			</tr>
 			<?php 

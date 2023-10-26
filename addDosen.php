@@ -16,40 +16,89 @@
 	?>
 	<div class="utama">		
 		<br><br><br>		
-		<h3>TAMBAH DATA DOSEN</h3>
+		<h3 class="text-center">TAMBAH DATA DOSEN</h3>
 		<div class="alert alert-success alert-dismissible" id="success" style="display:none;">
 	  		<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
 		</div>	
-		<form method="post" action="sv_addDosen.php" enctype="multipart/form-data">
+		<form class="m-4" method="post" action="sv_addDosen.php" enctype="multipart/form-data">
 			<div class="form-group">
-				<label for="npp2">NPP:</label>
-    			<input class="form-control" type="text" value="0686.11" name="npp" id="npp" disabled readonly>
-				<select name="npp1" id="npp1">
-            		<option value="2020">2020</option>
-            		<option value="2019">2019</option>
-		            <option value="2018">2018</option>
-            		<option value="2017">2017</option>
-		        </select>
-				<input class="form-control" type="text" name="npp" id="npp" required>
+				<label for="nim">NPP</label>
+				<!-- <input class="form-control" type="text" name="npp" id="npp" required> -->
+				<div class="form-row">
+					<div class="col-md-4">
+						<input type="text" class="form-control" name="npp1" id="npp" value="0686.11" readonly>
+					</div>
+					<div class="col-md-4">
+						<select name="npp2" id="npp" class="form-control" type="text">
+							<option selected="selected"></option>
+							<?php
+								for($i=1999; $i<=2023; $i++)
+							{
+								echo"<option value=$i>$i</option>";
+								}
+							?>
+						</select>
+						
+					</div>
+					<div class="col-md-4">
+					<input type="text" class="form-control" name="npp3" id="npp" required>
+					</div>
+
+				</div>
 			</div>
 			<div class="form-group">
-				<label for="namadosen">Nama:</label>
+				<label for="nama">Nama</label>
 				<input class="form-control" type="text" name="namadosen" id="namadosen">
 			</div>
 			<div class="form-group">
-				<label>Homebase:</label><br>
-				<select class="form-select form-select-sm" aria-label="Small select example"  name="homebase" id="homebase">
-					<option selected>Homebase</option>
-            		<option value="A11">A11</option>
-            		<option value="A12">A12</option>
-		            <option value="A13">A13</option>
-            		<option value="A14">A14</option>
-				</select>
-			</div>
+					<label for="nama">Homebase:</label>
+                    <select class="form-control" name="homebase" id="homebase" value="<?php echo $row['homebase']?>">
+                            <option value="">- Pilih Homebase -</option>
+                                <option value="A10" >A10</option>
+                                <option value="A12" >A12</option>
+                                <option value="A13" >A13</option>
+                                <option value="B14" >B14</option>
+                                <option value="B15" >B15</option>
+                                <option value="B16" >B16</option>
+                                <option value="C17" >C17</option>
+                                <option value="C18" >C18</option>
+                            </select>
+				</div>
+
 			<div>		
 				<button type="submit" class="btn btn-primary" value="Simpan">Simpan</button>
 			</div>
 		</form>
 	</div>
+	<!--
+	<script>
+		$(document).ready(function(){
+			$('#butsave').on('click',function(){			
+				$('#butsave').attr('disabled', 'disabled');
+				var nim 	= $('#nim').val();
+				var nama	= $('#nama').val();
+				var email 	= $('#email').val();
+				
+				$.ajax({
+					type	: "POST",
+					url		: "sv_addMhs.php",
+					data	: {
+								nim:nim,
+								nama:nama,
+								email:email
+							  },
+					contentType	:"undefined",					
+					success : function(dataResult){						
+						alert('success');
+						$("#butsave").removeAttr("disabled");
+						$('#fupForm').find('input:text').val('');
+						$("#success").show();
+						$('#success').html(dataResult);	
+					}	   
+				});
+			});
+		});
+	</script>
+	-->	
 </body>
 </html>

@@ -14,11 +14,11 @@
 </head>
 <body>
 	<?php
-	require "head.html";
 	require "fungsi.php";
-	$id=dekipurl($_GET['kode']);
+	require "head.html";
+	$id=$_GET['kode'];
 	$sql="select * from dosen where npp='$id'";
-	$qry = mysqli_query($koneksi, $sql);
+	$qry=mysqli_query($koneksi,$sql);
 	if(mysqli_num_rows($qry) == 0) {
 		echo "<script>
 		alert('npp tidak ditemukan');
@@ -26,37 +26,55 @@
 		</script>";
 		exit();
 	}
-	
-	$row=mysqli_fetch_object($qry);
+	$row=mysqli_fetch_assoc($qry);
 	?>
-	<div class="utama">		
-		<br><br><br>		
-		<h3>EDIT DATA DOSEN</h3>
-		<div class="alert alert-success alert-dismissible" id="success" style="display:none;">
-	  		<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-		</div>	
-		<form method="post" action="sv_editDosen.php" enctype="multipart/form-data">
-			<div class="form-group">
-				<label for="npp">NPP:</label>
-				<input class="form-control" type="text" name="npp" id="npp" value="<?php echo $row['npp']?>" readonly>
-			</div>
-			<div class="form-group">
-				<label for="namadosen">Nama:</label>
-				<input class="form-control" type="text" name="namadosen" id="namadosen" value="<?php echo $row['namadosen']?>">
-			</div>
-			<div class="form-group">
-				<label>Homebase:</label><br>
-				<select name="homebase" id="homebase">
-            		<option value="A11" <?php echo $row->homebase == "A11"?"selected":""?>>A11</option>
-            		<option value="A12" <?php echo $row->homebase == "A12"?"selected":""?>>A12</option>
-		            <option value="A13" <?php echo $row->homebase == "A13"?"selected":""?>>A13</option>
-            		<option value="A14" <?php echo $row->homebase == "A14"?"selected":""?>>A14</option>
-		        </select>
-			</div>
-			<div>		
-				<button type="submit" class="btn btn-primary" value="Simpan">Simpan</button>
-			</div>
-		</form>
+	<div class="utama">
+		<h2 class="mb-3 text-center">EDIT DATA DOSEN</h2>	
+		<div class="row">
+		<div class="col-sm-9">
+			<form enctype="multipart/form-data" method="post" action="sv_editDosen.php">
+				<div class="form-group">
+					<label for="nim">NPP:</label>
+					<input class="form-control" type="text" name="npp" id="npp" value="<?php echo $row['npp']?>" readonly>
+				</div>
+				<div class="form-group">
+					<label for="nama">Nama:</label>
+					<input class="form-control" type="text" name="namadosen" id="namadosen" value="<?php echo $row['namadosen']?>">
+				</div>
+				<div class="form-group">
+					<label for="nama">Homebase:</label>
+                    <select class="form-control" name="homebase" id="homebase" value="<?php echo $row['homebase']?>">
+                            <option value="">- Pilih Homebase -</option>
+                                <option value="A10" >A10</option>
+                                <option value="A12" >A12</option>
+                                <option value="A13" >A13</option>
+                                <option value="B14" >B14</option>
+                                <option value="B15" >B15</option>
+                                <option value="B16" >B16</option>
+                                <option value="C17" >C17</option>
+                                <option value="C18" >C18</option>
+                            </select>
+				</div>
+								
+				<div>		
+					<button class="btn btn-primary" type="submit" id="submit">Simpan</button>
+				</div>
+				<input type="hidden" name="npp" id="npp" value="<?php echo $npp?>">
+			</form>
+		</div>
+		</div>
 	</div>
+	<script>
+		$('#submit').on('click',function(){
+			var homebase 		= $('#homebase').val();
+			var namadosen	= $('#namadosen').val();
+			var npp 	= $('#npp').val();
+			$.ajax({
+				method	: "POST",
+				url		: "sv_editDosen.php",
+				data	: {homebase:homebase, namadosen:namadosen, npp:npp}
+			});
+		});
+	</script>
 </body>
 </html>

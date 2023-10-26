@@ -3,21 +3,30 @@
 require "fungsi.php";
 
 //memindahkan data kiriman dari form ke var biasa
-$idmatkul=dekipurl($_GET["kode"]);
+$id=dekipurl($_GET["kode"]);
 
-$q = "SELECT * FROM matkul WHERE idmatkul='".$idmatkul."'";
+// Gunakan prepared statement untuk meminta data dari database
+$sql = "SELECT * FROM matkul WHERE idmatkul = ?";
+$stmt = mysqli_prepare($koneksi, $sql);
+mysqli_stmt_bind_param($stmt, "s", $id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 
-$rs = mysqli_query($koneksi, $q);
-//membuat query hapus data
-if(mysqli_num_rows($rs) == 0) {
-    $sql="delete from matkul where idmatkul='$idmatkul'";
-    mysqli_query($koneksi,$sql);
-    header("location:updateMatkul.php");
-}
-else{
+// menghindari serangan SQL Injection dengan menggunakan prepared statement
+if(mysqli_num_rows($result) == 0){
     echo "<script>
-        alert ('Hapus matkul gagal : ".$idmatkul." tidak ditemukan')
-        javascript:history.go(-1)
+    alert ('Hapus matkul gagal : ".$id." tidak ditemukan')
+    javascript:history.go(-1)
     </script>";
 }
+else {
+    $delete_sql = "DELETE FROM matkul WHERE idmatkul = ?";
+    $delete_stmt = mysqli_prepare($koneksi, $delete_sql);
+    mysqli_stmt_bind_param($delete_stmt, "s", $id);
+    mysqli_stmt_execute($delete_stmt);
+    
+    // Redirect ke halaman setelah penghapusan
+    header("location:updateMatkul.php");
+}
+
 ?>

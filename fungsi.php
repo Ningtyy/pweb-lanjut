@@ -3,7 +3,7 @@
 $koneksi=mysqli_connect('localhost','root','','pwlgenap2019-akademik');
 
 function enkripsiurl($id){
-    $enc = base64_encode(rand() * strtotime(date("Y-m-d H:I:s"))."-".$id);
+    $enc = base64_encode(rand() * strtotime(date("Y-m-d H:i:s"))."-".$id);
     return $enc;
 }
 
